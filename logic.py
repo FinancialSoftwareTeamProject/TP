@@ -1,6 +1,7 @@
+# geeksforgeeks 2048 참고
 import random 
 
-def start_game(): 
+def start_game(): # 게임 시작과 동시에 4x4 행렬 생성한다.
 
     mat = [] 
     for i in range(4): 
@@ -9,7 +10,7 @@ def start_game():
     add_new_2(mat) 
     return mat
 
-def add_new_2(mat): 
+def add_new_2(mat): # 새로운 2를 생성한다.
 
     r = random.randint(0, 3) 
     c = random.randint(0, 3) 
@@ -19,22 +20,22 @@ def add_new_2(mat):
         r = random.randint(0, 3) 
         c = random.randint(0, 3) 
 
-    mat[r][c] = 2
+    mat[r][c] = 2 # 1행1열에서 4행4열까지 빈공간을 찾아 2를 넣는다.
 
 
-def get_current_state(mat): 
+def get_current_state(mat):  #현재 상태를 표시한다.
 
-    for i in range(4): 
+    for i in range(4): # 어느칸이라도 2048이 존재하면 승리한다.
         for j in range(4): 
             if(mat[i][j]== 2048): 
                 return 'Won'
  
-    for i in range(4): 
+    for i in range(4): # 빈칸이 존재한다면 계속 진행한다.
         for j in range(4): 
             if(mat[i][j]== 0): 
                 return ''
 
-    for i in range(3): 
+    for i in range(3): # 붙어있는 칸에 같은 숫자가 존재하면 합쳐질수 있으므로 계속진행.
         for j in range(3): 
             if(mat[i][j]== mat[i + 1][j] or mat[i][j]== mat[i][j + 1]): 
                 return ''
@@ -48,9 +49,9 @@ def get_current_state(mat):
             return ''
 
 
-    return 'Lost'
+    return 'Lost' # 어느것도 해당하지 않으면 패배
  
-def compress(mat): 
+def compress(mat): # 한쪽 벽으로 몰아 넣는 함수
 
     changed = False
 
@@ -74,7 +75,7 @@ def compress(mat):
 
     return new_mat, changed 
 
-def merge(mat): 
+def merge(mat): #합쳐질 수 있다면 서로 합친 상태를 표시하고 빈공간을 0으로 채워넣는다.
     
     changed = False
     
@@ -90,7 +91,7 @@ def merge(mat):
 
     return mat, changed 
 
-def reverse(mat): 
+def reverse(mat): # 행렬을 리버스 한다.
     new_mat =[] 
     for i in range(4): 
         new_mat.append([]) 
@@ -98,7 +99,7 @@ def reverse(mat):
             new_mat[i].append(mat[i][3 - j]) 
     return new_mat 
 
-def transpose(mat): 
+def transpose(mat):# 행렬을 트랜스포즈 한다.
     new_mat = [] 
     for i in range(4): 
         new_mat.append([]) 
@@ -106,7 +107,7 @@ def transpose(mat):
             new_mat[i].append(mat[j][i]) 
     return new_mat 
 
-def move_left(grid): 
+def move_left(grid): # 왼쪽으로 몰아넣어 합친다.
 
     new_grid, changed1 = compress(grid) 
 
@@ -118,7 +119,7 @@ def move_left(grid):
 
     return new_grid, changed 
 
-def move_right(grid): 
+def move_right(grid): #리버스를 이용하여 오른쪽으로 가는 커맨드 구현.
 
     new_grid = reverse(grid) 
 
@@ -127,7 +128,7 @@ def move_right(grid):
     new_grid = reverse(new_grid) 
     return new_grid, changed 
 
-def move_up(grid): 
+def move_up(grid): # 트랜스 포즈를 이용하여 위로가는 커맨드를 구현하였다.
 
     new_grid = transpose(grid) 
 
@@ -136,7 +137,7 @@ def move_up(grid):
     new_grid = transpose(new_grid) 
     return new_grid, changed 
  
-def move_down(grid): 
+def move_down(grid): # 트랜스 포즈와 오른쪽 커맨드를 이용하여 아래 커맨드 구현.
 
     new_grid = transpose(grid) 
 
